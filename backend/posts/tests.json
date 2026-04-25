@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "GET all posts",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST without auth returns 403",
+      "method": "POST",
+      "path": "/",
+      "body": {"title": "Test", "content": "Test content"},
+      "expectedStatus": 403,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

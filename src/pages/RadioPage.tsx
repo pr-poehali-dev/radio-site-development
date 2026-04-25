@@ -357,6 +357,15 @@ function Navbar({ activeSection }: { activeSection: string }) {
             {label}
           </button>
         ))}
+        <a
+          href="/blog"
+          className="font-rubik text-sm uppercase tracking-widest transition-colors"
+          style={{ color: 'rgba(255,255,255,0.5)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'var(--neon-pink)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+        >
+          Блог
+        </a>
       </div>
 
       <div className="flex items-center gap-2">
