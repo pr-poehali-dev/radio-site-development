@@ -41,8 +41,8 @@ function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
             animation: 'fade-in 0.7s ease-out 0.1s both',
           }}
         >
-          <span className="neon-text-pink">RADIO</span>{' '}
-          <span className="text-white">PULSE</span>
+          <span className="neon-text-pink">AFisht</span>{' '}
+          <span className="text-white">Radio</span>
         </h1>
 
         <p
@@ -388,8 +388,8 @@ function Navbar({ activeSection }: { activeSection: string }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 glass-dark border-b border-white/5">
       <button onClick={() => scrollTo('hero')} className="font-oswald font-700 text-xl uppercase tracking-wider">
-        <span className="neon-text-pink">RADIO</span>
-        <span className="text-white"> PULSE</span>
+        <span className="neon-text-pink">AFisht</span>
+        <span className="text-white"> Radio</span>
       </button>
 
       <div className="hidden md:flex items-center gap-8">
@@ -456,8 +456,8 @@ export default function RadioPage() {
 
       <footer className="border-t border-white/5 py-10 px-6 text-center">
         <div className="font-oswald font-700 text-2xl uppercase mb-2">
-          <span className="neon-text-pink">RADIO</span>
-          <span className="text-white"> PULSE</span>
+          <span className="neon-text-pink">AFisht</span>
+          <span className="text-white"> Radio</span>
         </div>
         <p className="font-rubik text-xs text-white/20 uppercase tracking-widest">
           © 2025 · Живая музыка 24/7 · Все права защищены
