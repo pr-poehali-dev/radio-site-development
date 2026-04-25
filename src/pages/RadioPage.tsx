@@ -66,13 +66,7 @@ function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
             <Icon name="Radio" size={20} />
             Слушать эфир
           </button>
-          <button
-            onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex items-center gap-3 px-8 py-4 rounded-full font-oswald font-600 text-lg uppercase tracking-wider text-white/80 hover:text-white border border-white/20 hover:border-[var(--neon-cyan)] transition-all duration-300 glass"
-          >
-            <Icon name="Calendar" size={20} />
-            Расписание
-          </button>
+
         </div>
       </div>
 
