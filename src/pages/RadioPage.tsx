@@ -187,41 +187,6 @@ function PlayerSection() {
                 />
               </div>
 
-              {/* Последние треки */}
-              <div>
-                <div className="font-oswald text-sm uppercase tracking-widest text-white/40 mb-3">
-                  Последние треки
-                </div>
-                <div
-                  className="my_lastsongs flex flex-col gap-2"
-                  data-revert={1}
-                  style={{ maxWidth: '100%' }}
-                >
-                  <div
-                    className="my_lastsonghtml"
-                    style={{ display: 'none' }}
-                  >
-                    <div className="flex items-center gap-3 glass rounded-xl p-2 border border-white/5 hover:border-[rgba(255,45,120,0.3)] transition-colors">
-                      <img
-                        className="my_lastsong_cover rounded-lg flex-shrink-0"
-                        style={{ width: '38px', height: '38px', objectFit: 'cover' }}
-                        alt=""
-                      />
-                      <div className="flex flex-col min-w-0 flex-1">
-                        <span className="font-rubik text-xs text-white/30">%songtime%</span>
-                        <a
-                          href={`https://www.youtube.com/results?search_query=%songencode%`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-rubik text-sm text-white/70 hover:text-[var(--neon-pink)] truncate transition-colors"
-                        >
-                          %song%
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
