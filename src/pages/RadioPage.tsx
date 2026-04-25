@@ -27,6 +27,15 @@ function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl">
+        <div className="flex justify-center mb-6" style={{ animation: 'fade-in 0.4s ease-out forwards' }}>
+          <img
+            src="https://cdn.poehali.dev/projects/6e50eadb-0f09-4bb9-ae52-5bf9e159fd4c/bucket/1bdd6d6a-68f6-42bf-8034-66dd5febd8fa.jpg"
+            alt="AFisht Radio"
+            className="w-24 h-24 rounded-2xl object-cover"
+            style={{ boxShadow: '0 0 30px rgba(255,45,120,0.5), 0 0 60px rgba(255,45,120,0.2)' }}
+          />
+        </div>
+
         <div className="inline-flex items-center gap-3 glass rounded-full px-5 py-2 mb-8 border border-[var(--neon-pink)/30]"
           style={{ animation: 'fade-in 0.5s ease-out forwards' }}>
           <span className="w-2 h-2 rounded-full bg-[var(--neon-green)] animate-pulse" />
@@ -387,9 +396,17 @@ function Navbar({ activeSection }: { activeSection: string }) {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 glass-dark border-b border-white/5">
-      <button onClick={() => scrollTo('hero')} className="font-oswald font-700 text-xl uppercase tracking-wider">
-        <span className="neon-text-pink">AFisht</span>
-        <span className="text-white"> Radio</span>
+      <button onClick={() => scrollTo('hero')} className="flex items-center gap-2">
+        <img
+          src="https://cdn.poehali.dev/projects/6e50eadb-0f09-4bb9-ae52-5bf9e159fd4c/bucket/1bdd6d6a-68f6-42bf-8034-66dd5febd8fa.jpg"
+          alt="AFisht Radio"
+          className="w-9 h-9 rounded-lg object-cover"
+          style={{ boxShadow: '0 0 10px rgba(255,45,120,0.4)' }}
+        />
+        <span className="font-oswald font-700 text-xl uppercase tracking-wider">
+          <span className="neon-text-pink">AFisht</span>
+          <span className="text-white"> Radio</span>
+        </span>
       </button>
 
       <div className="hidden md:flex items-center gap-8">
