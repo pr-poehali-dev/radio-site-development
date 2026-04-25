@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-const STREAM_URL = 'https://stream.example.com/live'; // заглушка — замените реальным URL
+const RADIO_ID = '55119';
 
 const SHOWS = [
   { time: '08:00', name: 'Утренний заряд', host: 'DJ NOVA', active: true },
@@ -11,71 +11,6 @@ const SHOWS = [
   { time: '20:00', name: 'Night Session', host: 'DJ DARK', active: false },
 ];
 
-function Equalizer({ isPlaying }: { isPlaying: boolean }) {
-  const bars = [0.4, 0.7, 0.5, 1, 0.6, 0.8, 0.45, 0.9, 0.55, 0.75, 0.35, 0.65];
-  return (
-    <div className="flex items-end gap-[3px] h-10">
-      {bars.map((h, i) => (
-        <div
-          key={i}
-          className="w-[4px] rounded-sm bg-[var(--neon-pink)] origin-bottom"
-          style={{
-            height: `${h * 100}%`,
-            animation: isPlaying ? `pulse-bar ${0.5 + Math.random() * 0.6}s ease-in-out infinite` : 'none',
-            animationDelay: `${i * 0.07}s`,
-            opacity: isPlaying ? 1 : 0.3,
-            transform: isPlaying ? undefined : `scaleY(0.2)`,
-            transition: 'opacity 0.3s, transform 0.3s',
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function VinylRecord({ isPlaying }: { isPlaying: boolean }) {
-  return (
-    <div className="relative w-64 h-64 mx-auto select-none">
-      <div
-        className="absolute inset-0 rounded-full border-4 border-[var(--neon-pink)/30]"
-        style={{
-          background: 'conic-gradient(from 0deg, #1a0a1e, #0d1a2e, #1a0a1e, #0a1a0d, #1a0a1e)',
-          animation: isPlaying ? 'spin-slow 12s linear infinite' : 'none',
-          boxShadow: isPlaying
-            ? '0 0 30px rgba(255,45,120,0.4), 0 0 60px rgba(255,45,120,0.2), inset 0 0 30px rgba(0,0,0,0.8)'
-            : '0 0 10px rgba(255,45,120,0.1), inset 0 0 30px rgba(0,0,0,0.8)',
-          transition: 'box-shadow 0.5s',
-        }}
-      >
-        {[60, 80, 100, 120, 140, 160, 180, 200, 220, 240].map(r => (
-          <div
-            key={r}
-            className="absolute rounded-full border border-white/5"
-            style={{
-              width: `${r}px`, height: `${r}px`,
-              top: `${(256 - r) / 2}px`, left: `${(256 - r) / 2}px`,
-            }}
-          />
-        ))}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className="w-16 h-16 rounded-full"
-            style={{
-              background: 'radial-gradient(circle, #FF2D78 0%, #8B0033 60%, #3d001a 100%)',
-              boxShadow: isPlaying ? '0 0 20px rgba(255,45,120,0.8)' : 'none',
-              transition: 'box-shadow 0.5s',
-            }}
-          />
-        </div>
-      </div>
-      {isPlaying && (
-        <div className="absolute inset-0 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 30% 30%, rgba(255,45,120,0.1) 0%, transparent 70%)' }}
-        />
-      )}
-    </div>
-  );
-}
 
 function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
   return (
@@ -155,26 +90,24 @@ function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
 }
 
 function PlayerSection() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(80);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(() => {});
-      }
-    }
-    setIsPlaying(!isPlaying);
-  };
+  const scriptLoaded = useRef(false);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume / 100;
-    }
-  }, [volume]);
+    if (scriptLoaded.current) return;
+    scriptLoaded.current = true;
+
+    const script = document.createElement('script');
+    script.src = `https://myradio24.com/player/player.js?v3.31`;
+    script.setAttribute('data-radio', RADIO_ID);
+    script.setAttribute('data-interval', '15');
+    script.setAttribute('data-vmid', RADIO_ID);
+    script.setAttribute('data-lang', 'ru');
+    document.body.appendChild(script);
+
+    return () => {
+      if (document.body.contains(script)) document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <section id="player" className="py-24 px-6">
@@ -190,77 +123,108 @@ function PlayerSection() {
 
         <div
           className="glass rounded-3xl p-8 md:p-12 border border-white/10 relative overflow-hidden"
-          style={{ boxShadow: isPlaying ? '0 0 60px rgba(255,45,120,0.15), 0 20px 60px rgba(0,0,0,0.5)' : '0 20px 60px rgba(0,0,0,0.5)', transition: 'box-shadow 0.5s' }}
+          style={{ boxShadow: '0 0 60px rgba(255,45,120,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}
         >
           <div className="absolute top-0 left-0 right-0 h-px"
             style={{ background: 'linear-gradient(90deg, transparent, var(--neon-pink), transparent)' }} />
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <VinylRecord isPlaying={isPlaying} />
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Левая: обложка трека + инфо */}
+            <div className="flex flex-col items-center gap-6">
+              <div
+                className="relative w-56 h-56 rounded-2xl overflow-hidden border border-white/10"
+                style={{ boxShadow: '0 0 30px rgba(255,45,120,0.25)' }}
+              >
+                <div
+                  data-myinfo="img"
+                  style={{ width: '100%', height: '100%', backgroundSize: 'cover', backgroundPosition: 'center', backgroundImage: 'linear-gradient(135deg,#1a0a1e,#0d1a2e)' }}
+                />
+              </div>
+
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="w-2 h-2 rounded-full bg-[var(--neon-green)] animate-pulse" />
+                  <span className="text-xs font-rubik uppercase tracking-widest text-white/40">В эфире</span>
+                  <span className="text-xs font-rubik text-white/30" data-myinfo="isonline" />
+                </div>
+                <div className="font-oswald font-600 text-xl text-white uppercase mb-1" data-myinfo="song">
+                  Загрузка...
+                </div>
+                <div className="font-rubik text-sm text-white/40" data-myinfo="streamname" />
+                <div className="font-rubik text-xs text-white/30 mt-1">
+                  <span data-myinfo="listeners" /> слушателей · <span data-myinfo="kbps" /> kbps
+                </div>
+              </div>
             </div>
 
+            {/* Правая: плеер + визуализатор + последние треки */}
             <div className="flex flex-col gap-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-2 h-2 rounded-full animate-pulse"
-                    style={{ backgroundColor: isPlaying ? 'var(--neon-green)' : 'rgba(255,255,255,0.3)' }} />
-                  <span className="text-xs font-rubik uppercase tracking-widest text-white/40">
-                    {isPlaying ? 'В эфире' : 'Не в эфире'}
-                  </span>
-                </div>
-                <h3 className="font-oswald font-600 text-3xl text-white uppercase mb-1">Утренний заряд</h3>
-                <p className="font-rubik text-white/50">DJ NOVA · RADIO PULSE FM</p>
+              {/* Плеер myradio24 */}
+              <div className="flex justify-center">
+                <div
+                  id="my_player"
+                  className="my_player"
+                  data-player="energy"
+                  data-skin="blue"
+                  data-width="280"
+                  data-autoplay="1"
+                  data-volume="70"
+                  data-streamurl={`https://myradio24.org/${RADIO_ID}`}
+                />
               </div>
 
-              <Equalizer isPlaying={isPlaying} />
+              {/* Визуализатор */}
+              <div className="flex justify-center rounded-xl overflow-hidden"
+                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,45,120,0.15)' }}>
+                <canvas
+                  className="my_visualizer"
+                  width={280}
+                  height={80}
+                  data-size={64}
+                  data-revert={0}
+                  data-color="rgb"
+                  style={{ display: 'block' }}
+                />
+              </div>
 
-              <div className="flex items-center gap-6">
-                <button
-                  onClick={togglePlay}
-                  className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
-                  style={{
-                    background: 'linear-gradient(135deg, #FF2D78, #8B0033)',
-                    boxShadow: isPlaying
-                      ? '0 0 30px rgba(255,45,120,0.7), 0 0 60px rgba(255,45,120,0.3)'
-                      : '0 0 15px rgba(255,45,120,0.3)',
-                    transition: 'box-shadow 0.3s',
-                  }}
+              {/* Последние треки */}
+              <div>
+                <div className="font-oswald text-sm uppercase tracking-widest text-white/40 mb-3">
+                  Последние треки
+                </div>
+                <div
+                  className="my_lastsongs flex flex-col gap-2"
+                  data-revert={1}
+                  style={{ maxWidth: '100%' }}
                 >
-                  <Icon name={isPlaying ? 'Pause' : 'Play'} size={24} className="text-white" />
-                </button>
-
-                <div className="flex-1">
-                  <div className="flex items-center gap-3">
-                    <Icon name="Volume2" size={18} className="text-white/40" />
-                    <input
-                      type="range"
-                      min={0} max={100}
-                      value={volume}
-                      onChange={e => setVolume(Number(e.target.value))}
-                      className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer"
-                      style={{
-                        background: `linear-gradient(90deg, var(--neon-pink) ${volume}%, rgba(255,255,255,0.15) ${volume}%)`,
-                        WebkitAppearance: 'none',
-                      }}
-                    />
-                    <span className="text-xs font-rubik text-white/40 w-8 text-right">{volume}</span>
+                  <div
+                    className="my_lastsonghtml"
+                    style={{ display: 'none' }}
+                  >
+                    <div className="flex items-center gap-3 glass rounded-xl p-2 border border-white/5 hover:border-[rgba(255,45,120,0.3)] transition-colors">
+                      <img
+                        className="my_lastsong_cover rounded-lg flex-shrink-0"
+                        style={{ width: '38px', height: '38px', objectFit: 'cover' }}
+                        alt=""
+                      />
+                      <div className="flex flex-col min-w-0 flex-1">
+                        <span className="font-rubik text-xs text-white/30">%songtime%</span>
+                        <a
+                          href={`https://www.youtube.com/results?search_query=%songencode%`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-rubik text-sm text-white/70 hover:text-[var(--neon-pink)] truncate transition-colors"
+                        >
+                          %song%
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="flex gap-3 flex-wrap">
-                {['#HipHop', '#Electronic', '#Live', '#Bass'].map(tag => (
-                  <span key={tag} className="text-xs font-rubik px-3 py-1 rounded-full text-white/60 border border-white/10 glass">
-                    {tag}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
         </div>
-
-        <audio ref={audioRef} src={STREAM_URL} preload="none" />
       </div>
     </section>
   );
