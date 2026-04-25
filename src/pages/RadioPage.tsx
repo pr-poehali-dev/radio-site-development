@@ -237,22 +237,26 @@ function ContactSection() {
             </div>
 
             <div className="flex flex-col gap-4">
-              {[
-                { icon: 'Mail', label: 'Email', value: 'hello@radiopulse.fm' },
-                { icon: 'Phone', label: 'Телефон', value: '+7 (800) 123-45-67' },
-                { icon: 'MapPin', label: 'Студия', value: 'Москва, Арбат, 36' },
-              ].map(({ icon, label, value }) => (
-                <div key={label} className="flex items-center gap-4 glass rounded-2xl p-4 border border-white/6">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(255,45,120,0.15)' }}>
-                    <Icon name={icon} fallback="CircleAlert" size={18} style={{ color: 'var(--neon-pink)' }} />
-                  </div>
-                  <div>
-                    <div className="font-rubik text-xs text-white/30 uppercase tracking-wider">{label}</div>
-                    <div className="font-rubik text-white/80">{value}</div>
-                  </div>
+              <a href="mailto:fisht@mail.ru" className="flex items-center gap-4 glass rounded-2xl p-4 border border-white/6 hover:border-[rgba(255,45,120,0.4)] transition-colors group">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(255,45,120,0.15)' }}>
+                  <Icon name="Mail" size={18} style={{ color: 'var(--neon-pink)' }} />
                 </div>
-              ))}
+                <div>
+                  <div className="font-rubik text-xs text-white/30 uppercase tracking-wider">Email</div>
+                  <div className="font-rubik text-white/80 group-hover:text-white transition-colors">fisht@mail.ru</div>
+                </div>
+              </a>
+              <a href="https://t.me/afisht" target="_blank" rel="noreferrer" className="flex items-center gap-4 glass rounded-2xl p-4 border border-white/6 hover:border-[rgba(0,245,255,0.4)] transition-colors group">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(0,245,255,0.1)' }}>
+                  <Icon name="Send" size={18} style={{ color: 'var(--neon-cyan)' }} />
+                </div>
+                <div>
+                  <div className="font-rubik text-xs text-white/30 uppercase tracking-wider">Telegram</div>
+                  <div className="font-rubik text-white/80 group-hover:text-white transition-colors">@afisht</div>
+                </div>
+              </a>
             </div>
           </div>
 
