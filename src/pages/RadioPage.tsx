@@ -3,14 +3,6 @@ import Icon from '@/components/ui/icon';
 
 const RADIO_ID = '55119';
 
-const SHOWS = [
-  { time: '08:00', name: 'Утренний заряд', host: 'DJ NOVA', active: true },
-  { time: '10:00', name: 'TOP HIT MIX', host: 'DJ BEATS', active: false },
-  { time: '13:00', name: 'Обеденный рейв', host: 'MC FLOW', active: false },
-  { time: '16:00', name: 'Drive Time', host: 'DJ PULSE', active: false },
-  { time: '20:00', name: 'Night Session', host: 'DJ DARK', active: false },
-];
-
 
 function HeroSection({ onScrollToPlayer }: { onScrollToPlayer: () => void }) {
   return (
@@ -204,64 +196,6 @@ function PlayerSection() {
   );
 }
 
-function ScheduleSection() {
-  return (
-    <section id="schedule" className="py-24 px-6 relative">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute right-0 top-1/2 w-96 h-96 rounded-full opacity-10 blur-3xl -translate-y-1/2"
-          style={{ background: 'radial-gradient(circle, #00F5FF 0%, transparent 70%)' }} />
-      </div>
-
-      <div className="max-w-4xl mx-auto relative">
-        <div className="text-center mb-16">
-          <span className="font-oswald text-sm uppercase tracking-widest neon-text-cyan mb-3 block">
-            — Программа передач —
-          </span>
-          <h2 className="font-oswald font-700 text-5xl md:text-6xl text-white uppercase">
-            Эфир сегодня
-          </h2>
-        </div>
-
-        <div className="flex flex-col gap-3">
-          {SHOWS.map((show, i) => (
-            <div
-              key={i}
-              className="glass rounded-2xl p-5 flex items-center gap-5 border transition-all duration-300 hover:border-[var(--neon-pink)/50] group cursor-pointer"
-              style={{
-                borderColor: show.active ? 'rgba(255,45,120,0.4)' : 'rgba(255,255,255,0.06)',
-                background: show.active ? 'rgba(255,45,120,0.08)' : undefined,
-                boxShadow: show.active ? '0 0 30px rgba(255,45,120,0.1)' : undefined,
-                animation: `fade-in 0.5s ease-out ${i * 0.08}s both`,
-              }}
-            >
-              <div className="text-center w-16 flex-shrink-0">
-                <span className="font-oswald font-600 text-xl" style={{ color: show.active ? 'var(--neon-pink)' : 'rgba(255,255,255,0.4)' }}>
-                  {show.time}
-                </span>
-              </div>
-
-              <div className="w-px h-10 bg-white/10 flex-shrink-0" />
-
-              <div className="flex-1">
-                <div className="font-oswald font-600 text-white text-xl uppercase group-hover:text-[var(--neon-pink)] transition-colors">
-                  {show.name}
-                </div>
-                <div className="font-rubik text-sm text-white/40">{show.host}</div>
-              </div>
-
-              {show.active && (
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="w-2 h-2 rounded-full bg-[var(--neon-green)] animate-pulse" />
-                  <span className="font-rubik text-xs text-[var(--neon-green)] uppercase tracking-widest">В эфире</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function ContactSection() {
   const [form, setForm] = useState({ name: '', phone: '', message: '' });
@@ -382,7 +316,6 @@ function Navbar({ activeSection }: { activeSection: string }) {
   const links = [
     { id: 'hero', label: 'Главная' },
     { id: 'player', label: 'Плеер' },
-    { id: 'schedule', label: 'Эфир' },
     { id: 'contacts', label: 'Контакты' },
   ];
 
@@ -440,7 +373,7 @@ export default function RadioPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'player', 'schedule', 'contacts'];
+      const sections = ['hero', 'player', 'contacts'];
       const scrollY = window.scrollY + window.innerHeight / 3;
 
       for (const id of [...sections].reverse()) {
@@ -468,7 +401,7 @@ export default function RadioPage() {
       <div ref={playerRef}>
         <PlayerSection />
       </div>
-      <ScheduleSection />
+
       <ContactSection />
 
       <footer className="border-t border-white/5 py-10 px-6 text-center">
